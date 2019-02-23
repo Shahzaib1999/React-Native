@@ -6,6 +6,7 @@ import Loader from "../Loader/Loader";
 import { Card, Icon, Text, Input } from 'react-native-elements';
 import Modal from "react-native-modal";
 
+
 class UserProfile extends Component {
 
     constructor(props){
@@ -53,18 +54,21 @@ class UserProfile extends Component {
         else {
 
             db.collection("offers").add({
-                [uid]: false,
-                [id]: true,
-                sender: id,
+                [uid]: true,
+                [id]: false,
+                sender: uid,
                 amount,
-                reciever: uid,
+                reciever: id,
                 user_name,
                 user_lat,
                 user_lon,
                 user_service,
                 name,
                 lat,
-                lon
+                done: false,
+                request: false,
+                lon,
+                rating: 0
             }).then(res => {
 
                 this.setState({ isModalVisible: false });

@@ -203,10 +203,7 @@ class Category extends Component {
                             // ()=> this.distance(lat,lon,user.data().latitude,user.data().longitude);
 
                             
-                            if ((lat == user.data().latitude) && (lon == user.data().longitude)) {
-                                return 0;
-                            }
-                            else {
+                                debugger
                                 var radlat1 = Math.PI * lat / 180;
                                 var radlat2 = Math.PI * user.data().latitude / 180;
                                 var theta = lon - user.data().longitude;
@@ -226,7 +223,10 @@ class Category extends Component {
                                     var a = { user_id: user.data().uid, user_name: user.data().name, user_phone: user.data().phone, user_lat: user.data().latitude, user_lon: user.data().longitude, user_image: user.data().image };
                                     t.setState({ use: [...t.state.use, a], loading: false, response: 'abc', cat: category });
                                 }
-                            }
+                                else{
+                                    this.setState({ loading: false, response: "No result Found", cat: category, use: [] });
+                                }
+                            
 
                             
 
@@ -249,7 +249,7 @@ class Category extends Component {
 
                                 {!this.state.use.length ?
                                     <View style={styles.container}>
-                                    <Text>{lon}</Text>
+                                    <Text>{response}</Text>
                                     </View>
                                     :
                                     this.state.use.map((item, index) =>

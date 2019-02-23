@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Text, View, StyleSheet,Dimensions} from 'react-native';
+import { Text, View, StyleSheet,AsyncStorage} from 'react-native';
 import {MapView} from 'expo';
 
-const {width,height} = Dimensions.get("window");
+
 
 export default class Maap extends React.Component {
 
@@ -14,30 +14,31 @@ state ={
 
 
 
+
+  
+
 _getLocationAsync = async () => {
 
     //++++ this is use for getting current location if you are not save in anyncStorage....
 
-    let { status } = await Expo.Permissions.askAsync(Expo.Permissions.LOCATION);
-    if (status !== 'granted') {
-      this.setState({
-        errorMessage: 'Permission to access location was denied',
-      });
-    }
+    // let { status } = await Expo.Permissions.askAsync(Expo.Permissions.LOCATION);
+    // if (status !== 'granted') {
+    //   this.setState({
+    //     errorMessage: 'Permission to access location was denied',
+    //   });
+    // }
 
-    let location = await Expo.Location.getCurrentPositionAsync({});
-    var lat = this.props.navigation.getParam('lat');
-    var lon = this.props.navigation.getParam('lon');
-    this.setState({ location ,condition:true, lat, lon });
-    console.log('current location===',location)
+    // let location = await Expo.Location.getCurrentPositionAsync({});
+    // this.setState({ location ,condition:true });
+    // console.log('current location===',location)
 
 
     //+++this is data for giting priviously save current location of the user ..
 
-    // await AsyncStorage.getItem('userLocation')
-    // .then(req => JSON.parse(req)) 
-    // .then(location => {console.log('geting location');this.setState({location,condition:true})})
-    // .catch(error => console.log('error!'));
+    await AsyncStorage.getItem('userLocation')
+    .then(req => JSON.parse(req)) 
+    .then(location => {console.log('geting location');this.setState({location,condition:true})})
+    .catch(error => console.log('error!'));
     
   }; 
 
@@ -51,21 +52,15 @@ componentDidMount(){
 }
 
   render() {
- 
-    var lat = this.props.navigation.getParam('lat');
-    var lon = this.props.navigation.getParam('lon');
-    
-    if (lat != this.state.lat || lon != this.state.lon) {
-        this._getLocationAsync()
-    }
+  
 
     return (
       <View style={styles.container}>
-      {/* <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>your app Logo or etc</Text>
-      </View> */}
+      </View>
        {this.state.condition && <MapView 
-        style={{flex: 2, height: height, width: width}}
+        style={{flex:8}}
         initialRegion={{
           latitude:this.state.location.coords.latitude,
           longitude:this.state.location.coords.longitude,
@@ -82,14 +77,12 @@ componentDidMount(){
 
 
         {/* here you pput the latitude and longitude of services provider */}
-        {this.state.lat &&
         <MapView.Marker
-        coordinate={{latitude:this.state.lat,longitude:this.state.lon}}
+        coordinate={{latitude:24.9387003,longitude:66.9935333}}
         title={'service provider'}
         />
-        }
-        </MapView>
-    }
+
+        </MapView>}
 
       </View>
     );

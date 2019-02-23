@@ -125,10 +125,10 @@ export default class Dashboard extends Component {
     }
 
     submit = () => {
-        const {uid, phone, designation, service, name, image} = this.state;
+        const {uid, phone, designation, service, name, image, location} = this.state;
         const db = firebase.firestore();
         // alert(designation)
-        if (!phone || !designation || !name || !image) {
+        if (!phone || !designation || !name || !image || !location) {
             alert('Please fill all the fields','',"error");
         } else {
             
@@ -146,6 +146,7 @@ export default class Dashboard extends Component {
                         service,
                         user: false,
                         image,
+                        location,
                         longitude: this.state.region.longitude,
                         latitude: this.state.region.latitude
                     }).then(() =>{
@@ -161,6 +162,7 @@ export default class Dashboard extends Component {
                         phone,
                         image,
                         user: true,
+                        location,
                         serviceProvider: false,
                         longitude: this.state.region.longitude,
                         latitude: this.state.region.latitude
@@ -232,7 +234,11 @@ export default class Dashboard extends Component {
                     </View>
                     <View style={styles.second}>
                         <Text style={styles.text}>Phone:</Text>
-                        <TextInput placeholder="Enter Name" keyboardType="numeric" onChangeText={val => this.onChangeText('phone', val)} value={phone} style={styles.input} />
+                        <TextInput placeholder="Enter Phone" keyboardType="numeric" onChangeText={val => this.onChangeText('phone', val)} value={phone} style={styles.input} />
+                    </View>
+                    <View style={styles.second}>
+                        <Text style={styles.text}>Location:</Text>
+                        <TextInput placeholder="Area name" onChangeText={val => this.onChangeText('location', val)} value={location} style={styles.input} />
                     </View>
                     <View style={styles.second}>
                         <Text style={styles.text}>Select:</Text>
