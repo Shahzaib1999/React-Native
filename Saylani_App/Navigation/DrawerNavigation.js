@@ -12,13 +12,19 @@ import Offers from "../Screens/Offers/Offers";
 
 const AppTabNavigator = createBottomTabNavigator({
     Service: Services,
-    Offer: Offers,
+    // Offer: Offers,
     Dashboard: Dashboard,
     Map: Map,
     Category: Category,
-    UserProfile: UserProfile,
     Chat: Chat,
+    UserProfile: UserProfile,
+    Offer:Offers
 })
+
+signOut = async () => {
+    AsyncStorage.clear();
+    this.props.navigation.navigate('Welcome');
+}
 
 const AppStackNavigator = createStackNavigator({
     AppTabNavigator: {
@@ -41,7 +47,35 @@ const AppStackNavigator = createStackNavigator({
 
 const AppDrawerNavigator = createDrawerNavigator({
     Dashboard: AppStackNavigator,
+    Chat: createStackNavigator({
+        Chat: {
+            screen: Chat,
+            navigationOptions: ({navigation}) => ({
+                headerLeft:(
+                    <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+                        <View style={{paddingHorizontal: 10}}> 
+                            <Icon name="md-menu" size={24} />
+                        </View>
+                    </TouchableOpacity>
+                )
+            })
+        }
+    }),
     Service: Services,
+    // Offer: createStackNavigator({
+    //     Offer: {
+    //         screen:Offers,
+    //         navigationOptions: ({navigation}) => ({
+    //             headerLeft:(
+    //                 <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+    //                     <View style={{paddingHorizontal: 10}}> 
+    //                         <Icon name="md-menu" size={24} />
+    //                     </View>
+    //                 </TouchableOpacity>
+    //             )
+    //         })
+    //     }
+    // }),
 }
 );
 
