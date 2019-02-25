@@ -165,7 +165,7 @@ class Offers extends Component {
                                             <View key={index}>
                                                 <Card containerStyle={{ width: 380 }} titleStyle={{ fontSize: 30 }}>
                                                     <Text h3 style={{ marginBottom: 5 }}>
-                                                        Sender Name: {item.rname}
+                                                        Sender Name: {item.sname}
                                                     </Text>
                                                     <Text h4 style={{ marginBottom: 5 }}>
                                                         Amount: {item.amount}
@@ -188,11 +188,11 @@ class Offers extends Component {
                                                         <View>
                                                             {item.request ?
                                                                 <View>
-                                                                    <Button
+                                                                    {/* <Button
                                                                         icon={<Icon name='code' color='#ffffff' />}
                                                                         backgroundColor='#03A9F4'
                                                                         buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
-                                                                        title='CHAT' onPress={() => this.props.navigation.navigate('Chat', { id: uid, userid: item.sid, offer: item.offerid })} />
+                                                                        title='CHAT' onPress={() => this.props.navigation.navigate('Chat', { id: uid, userid: item.sid, offer: item.offerid, sendername: rname, recievename: })} /> */}
                                                                     <Button
                                                                         icon={<Icon name='code' color='#ffffff' />}
                                                                         backgroundColor='#03A9F4'
@@ -255,7 +255,7 @@ class Offers extends Component {
                                                                         icon={<Icon name='code' color='#ffffff' />}
                                                                         backgroundColor='#03A9F4'
                                                                         buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
-                                                                        title='CHAT' onPress={() => this.props.navigation.navigate('Chat', { id: uid, userid: item.sid, offer: item.offerid })} />
+                                                                        title='CHAT' onPress={() => this.props.navigation.navigate('Chat', { id: uid, recieverid: item.rid, offer: item.offerid, sendername: item.sname, recievername: item.rname})} />
                                                                     <Button
                                                                         icon={<Icon name='code' color='#ffffff' />}
                                                                         backgroundColor='#03A9F4'

@@ -28,7 +28,8 @@ export default class Dashboard extends Component {
             service: "user",
             phone: null,
             name: null,
-            image: ''
+            image: '',
+            cate: []
         })
     }
 
@@ -38,8 +39,17 @@ export default class Dashboard extends Component {
 
         const user = await AsyncStorage.getItem('userToken');
         this.setState({uid: user});
-        console.log("**************************",user);
         
+        db.collection("categories").get().then(ca =>{
+            ca.docs.forEach(cat =>{
+
+                var a = {name:cat.data().name}
+                this.setState({
+                    cate: [...this.state.cate,a]
+                })
+            })
+        })
+
         db.collection('users').where('uid','==',user).get().then(res =>{
             // alert(user)
             if (res.size) {
@@ -210,7 +220,7 @@ export default class Dashboard extends Component {
 
 
     render() {
-        const { availible, designation, phone, name, latitude, longitude, service, services, image, loading } = this.state;
+        const { availible, designation, phone, name, latitude, longitude, service, services, image, loading, location, cate } = this.state;
 
         return (
             <ScrollView scrollEventThrottle={16}>
@@ -261,12 +271,16 @@ export default class Dashboard extends Component {
                                 onValueChange={(itemValue, itemIndex) =>
                                     this.setState({ service: itemValue })
                                 }>
-                                <Picker.Item label="Carpenter" value="carpenter" />
-                                <Picker.Item label="Transport" value="transport" />
+                                {cate && cate.map((item,index) =>
+                                    <Picker.Item key={index} label={item.name} value={item.name} />
+                                )} 
+
+                                {/* <Picker.Item label="Transport" value="transport" />
                                 <Picker.Item label="Electrician" value="electric" />
                                 <Picker.Item label="Laundry" value="laundry" />
                                 <Picker.Item label="Plumber" value="plumber" />
-                                <Picker.Item label="Cleaning" value="cleaning" />
+                                <Picker.Item label="Cleaning" value="cleaning" /> */}
+                                
                             </Picker>
                         </View>
                     }
