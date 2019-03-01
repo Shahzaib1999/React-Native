@@ -30,10 +30,10 @@ const AppStackNavigator = createStackNavigator({
     AppTabNavigator: {
         screen: AppTabNavigator,
         navigationOptions: ({navigation}) => ({
-            title:'App',
-            headerTitleStyle: {
-                marginLeft: 100,
-              },
+            // title:'App',
+            // headerTitleStyle: {
+            //     marginLeft: 100,
+            //   },
             headerLeft:(
                 <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
                     <View style={{paddingHorizontal: 10}}> 
