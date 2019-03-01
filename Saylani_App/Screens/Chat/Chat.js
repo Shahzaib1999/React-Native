@@ -20,7 +20,8 @@ class Chat extends Component {
             message: "",
             mesag: [],
             list: [],
-            lis: false
+            lis: false,
+            offid: ''
         })
     }
 
@@ -43,7 +44,7 @@ class Chat extends Component {
                         
                     } else {
                         
-                        var a = { id: li.id, name: li.data().recievername, id2: li.data().senderid, offerid: li.data().offer}
+                        var a = { id: li.id, name: li.data().sendername, id2: li.data().senderid, offerid: li.data().offer}
                         this.setState({ list: [...this.state.list, a], lis: true });
 
                     }
@@ -70,14 +71,14 @@ class Chat extends Component {
 
                 res.docs.forEach(li => {
 
-                    if (li.data().recieverid != user) {
+                    if (li.data().recieverid != uid) {
 
                         var a = { id: li.id, name: li.data().recievername, id2: li.data().recieverid, offerid: li.data().offer}
                         this.setState({ list: [...this.state.list, a], lis: true });
                         
                     } else {
                         
-                        var a = { id: li.id, name: li.data().recievername, id2: li.data().senderid, offerid: li.data().offer}
+                        var a = { id: li.id, name: li.data().sendername, id2: li.data().senderid, offerid: li.data().offer}
                         this.setState({ list: [...this.state.list, a], lis: true });
 
                     }
@@ -96,13 +97,13 @@ class Chat extends Component {
         const { message, uid, id2, offid, sendername, recievername } = this.state;
         // var id1 = this.props.navigation.getParam('id');
         // var id2 = this.props.navigation.getParam("userid");
+        const db = firebase.firestore();
         var DateNew = new Date();
         var currentTime = DateNew.toLocaleTimeString();
         debugger
-        if (uid && id2) {
+        if (uid && id2 && offid) {
             debugger
 
-            const db = firebase.firestore();
 
             db.collection("chat").where(`${uid}`, "==", true).where(`${id2}`, "==", true).where("offer", "==", offid).onSnapshot(res => {
 
@@ -149,8 +150,31 @@ class Chat extends Component {
             })
 
 
-        }
-    }
+        }// if
+        else{
+
+            if (uid && id2) {
+
+                db.collection("chat").where(`${uid}`, "==", true).where(`${id2}`, "==", true).onSnapshot(res => {
+
+                    if (res.docs.length) {
+
+                        db.collection("chat").doc(res.docs[0].id).collection("messages").add({
+                            message,
+                            sender: uid,
+                            reciever: id2,
+                            Time: currentTime,
+                            Date: new Date()
+                        }).then(() => {
+                            this.setState({ message: "" })
+                        })
+                    }
+                });
+
+            }// if
+
+        }// else
+}
 
     sendMessage(id,id2,offer) {
 
@@ -252,6 +276,7 @@ class Chat extends Component {
 
 
         return (
+            <ScrollView scrollEventThrottle={16}>
             <View style={{ flex: 1 }}>
 
                 {lis ?
@@ -314,6 +339,7 @@ class Chat extends Component {
                     </View>
                 }
             </View>
+            </ScrollView>
         );
     }
 }
@@ -328,7 +354,7 @@ const styles = StyleSheet.create({
     chat: {
         flex: 1,
         width: width,
-        height: height,
+        height: height * .8,
         borderWidth: 2,
         borderColor: "#007bff",
     },
@@ -356,7 +382,9 @@ const styles = StyleSheet.create({
     //     marginTop: 20,
     },
     message: {
-
+        borderWidth: 2,
+        borderColor: 'red',
+        height: height * .53,
     },
     input: {
         flex: 1,
