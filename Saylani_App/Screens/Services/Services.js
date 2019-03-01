@@ -3,7 +3,7 @@ import { View, StyleSheet, Dimensions, Image, TouchableHighlight, AsyncStorage, 
 import Icon from 'react-native-vector-icons/Ionicons';
 // import { Icon } from 'react-native-elements'
 import {ImagePicker,Permissions} from 'expo';
-import { Text, SearchBar, Input } from 'react-native-elements';
+import { Text, SearchBar, ButtonGroup } from 'react-native-elements';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
@@ -18,7 +18,9 @@ class Services extends Component {
         this.state = ({
             uid: null,
             search: '',
+            selectedIndex: 1
         })
+        this.updateIndex = this.updateIndex.bind(this);
     }
 
     async componentWillMount(){
@@ -46,8 +48,13 @@ class Services extends Component {
         this.setState({ search });
     }; 
 
+    updateIndex (selectedIndex) {
+        this.setState({selectedIndex})
+      }
+
     render() {
-        const {uid, search, lat, lon} = this.state;
+        const buttons = ['Hello', 'World'];
+        const {uid, search, lat, lon, selectedIndex } = this.state;
         return (
             <ScrollView>
             <View style={styles.container}>
@@ -62,6 +69,12 @@ class Services extends Component {
                         containerStyle={{backgroundColor: '#fff', height: 50, width: 400,}}
                     />
                 </View>
+                    <ButtonGroup
+                        onPress={this.updateIndex}
+                        selectedIndex={selectedIndex}
+                        buttons={buttons}
+                        containerStyle={{ height: 30 }}
+                    />
                 <View style={styles.head}>
                     <Text style={styles.heading}>Services</Text>
                 </View>
